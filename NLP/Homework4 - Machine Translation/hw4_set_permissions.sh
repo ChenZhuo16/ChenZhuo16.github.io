@@ -1,0 +1,1 @@
+chmod -R 755 /home/$USER/hidden/$1/Homework4
