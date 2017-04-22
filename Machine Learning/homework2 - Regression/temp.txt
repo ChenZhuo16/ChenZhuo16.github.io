@@ -1,0 +1,47 @@
+import numpy as np
+train = np.loadtxt("spambase.train", delimiter=",")
+test = np.loadtxt("spambase.test", delimiter=",")
+x1=train[:,0:57]
+y1=train[:,57]
+x2=test[:,0:57]
+y2=test[:,57]
+x=np.concatenate((x1,x2))
+Nspam=np.sum(y1)
+Nspam2=np.sum(y2)
+catx1=np.zeros((2000,57))
+catx2=np.zeros((2601,57))
+p=np.zeros((2,57))
+p0=np.ones((2601,1))
+check=np.zeros((2601,1))
+for j in range(57):
+    count1=0
+    for i in range(2000):
+        if x1[i,j] < np.median(x[:,j]):
+            catx1[i,j]=1
+            if y1[i]==1:
+                count1=count1+1
+            else:
+                count1=count1
+        else:
+            catx1[i,j]=2
+    p[0,j]=(count1+1)/(Nspam+2)
+    p[1,j]=1-p[0,j]
+for j in range(57):
+    for i in range(2601):
+        if x2[i,j] < np.median(x[:,j]):
+            catx2[i,j]=1
+        else:
+            catx2[i,j]=2
+        p0[i]=p0[i]*p[catx2[i,j]-1,j]
+p0=p0*(Napam1/2000)
+check=(p0>0.5)
+check=check.astype(int)
+sm=0
+for i in range(2601):
+    if check[i]==y2[i]:
+        sm=sm
+    else:
+        sm=sm+1
+from __future__ import division
+error=sm/2601
+
